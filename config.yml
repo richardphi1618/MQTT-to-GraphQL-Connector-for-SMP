@@ -1,0 +1,46 @@
+
+MQTT_Broker:
+  - "192.168.0.2"
+  - "32799"
+
+MQTTSub_Topic:
+  - "ccam_sim/#"
+  - "node-red/#"
+
+Topic_toSMP:
+  - ["runID"]
+  - ["progress"]
+  - ["tload", "1"]
+  - ["tload", "2"]
+  - ["tload", "3"]
+  - ["tload", "4"]
+  - ["tload", "5"]
+  - ["tload", "6"]
+  - ["tload", "7"]
+  - ["tload", "8"]
+  - ["tload", "9"]
+  - ["tload", "10"]
+  - ["tload", "11"]
+  - ["tload", "12"]
+
+Topic_toSMP_dataType:
+  - "STRING"
+  - "INT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT" 
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT"
+  - "FLOAT" 
+
+SMP_Identifier:
+  - "MQTT_Connector"
+
+
+ 
