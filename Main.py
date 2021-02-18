@@ -4,19 +4,6 @@ import yaml, glob, os, time, sys, calendar, dotenv
 import msvcrt
 import threading
 
-dotenv.load_dotenv()
-
-#get authentication from SMP
-def SMP_auth():
-    authenticator = os.environ.get("authenticator")
-    pw = os.environ.get("pw")
-    user = os.environ.get("user")
-    role = os.environ.get("role")
-    token = smp.get_token(authenticator, pw, user, endpoint_url, role)
-    header = {"Authorization": token}
-
-    return header
-
 def getOldest(Directory):
     for file in glob.glob(Directory + "\\*.csv"):
         file_list.append(file)
@@ -67,8 +54,9 @@ except Exception:
     exit()
 
 #SMP header setup
-endpoint_url = "https://rtccam.cesmii.net/graphql"
-header = SMP_auth()
+endpoint_url = os.environ.get("endpoint_url")
+header = smp.SMP_auth()
+print(header)
 Connector_Identifier = "MQTT_Connector"
 
 #File Organization

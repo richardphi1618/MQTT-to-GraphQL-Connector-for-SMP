@@ -1,5 +1,5 @@
 import requests
-import json, csv, os
+import json, csv, os, dotenv
 
 def request(content, url, headers=None, verbose = False):
     if(verbose == True): print(content)
@@ -263,11 +263,19 @@ def build_entries(config, file, verbose=False):
 
     return final_entries
 
-if __name__ == '__main__':
+def SMP_auth():
+    dotenv.load_dotenv()
     endpoint_url = os.environ.get("endpoint_url")
     authenticator = os.environ.get("authenticator")
     pw = os.environ.get("pw")
     user = os.environ.get("user")
     role = os.environ.get("role")
-    header = {"Authorization":f"{get_token(authenticator, pw, user, endpoint_url, role)}"}
+    token = get_token(authenticator, pw, user, endpoint_url, role)
+    header = {"Authorization": token}
+
+    return header
+
+if __name__ == '__main__':
+    #SMP header setup
+    header = SMP_auth()
     print(header)
