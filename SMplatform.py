@@ -1,5 +1,5 @@
 import requests
-import json, csv
+import json, csv, os
 
 def request(content, url, headers=None, verbose = False):
     if(verbose == True): print(content)

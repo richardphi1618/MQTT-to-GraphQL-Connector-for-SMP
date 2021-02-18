@@ -100,7 +100,6 @@ while True:
         file = 'backlog.csv'
         
         if(os.path.exists(f'{ROOT_DIR}\\MQTT_Logging\\{file}')): 
-            print("then this happens.....")
             os.replace(f'{ROOT_DIR}\\MQTT_Logging\\{file}', f'{ROOT_DIR}\\pushing\\{file}')
     else:
         #Select Oldest File 
@@ -132,6 +131,7 @@ while True:
             else:
                 print(f"nothing to push for: {FQ_Tag}")
 
+        #a little house cleaning
         if file == 'backlog.csv':
             timestamp_epoch = calendar.timegm(time.localtime())
             file = f"backlog{timestamp_epoch}.csv"
