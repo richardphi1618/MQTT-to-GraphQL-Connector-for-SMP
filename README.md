@@ -23,7 +23,7 @@ The unique identifier to determine the source of the data. This is particularly 
 
 
 ## _#TODO_ 
- - [ ] add authentication parameters.....
+ - [ ] add authentication parameters for secure MQTT broker access
  - [ ] allow the addition of custom descriptions per topic
  - [ ] automated tag mapping to attributes (may be a seperate project)
 
