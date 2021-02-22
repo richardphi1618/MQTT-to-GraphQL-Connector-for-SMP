@@ -7,16 +7,27 @@ from pathlib import Path
 def current_milli_time():
     return round(time.time() * 1000)
 
+def import_config():
+    try:
+        with open("config.yml", 'r') as data:
+            config = yaml.safe_load(data)
+    except Exception as e:
+        print("MQTT Logger had an error importing config.yml:\n" + str(e))
+        exit()
+
+    return config
+
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    print("Connected with result code \n"+str(rc))
 
+    config = import_config()
+    
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
 
     client.subscribe("$SYS/#")
 
-    print(config['MQTTSub_Topic'])
     for i in config['MQTTSub_Topic']:
         print(i)
         client.subscribe(i)
@@ -25,7 +36,6 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     timestamp_epoch = current_milli_time()
     timestamp_iso = DT.datetime.fromtimestamp(timestamp_epoch/1000).strftime('%Y-%m-%d %H:%M:%S.%f')
-    #print(f"{msg.topic} {str(msg.payload)} @time of arrival:{timestamp_iso}")
     payload = str(msg.payload)
     topic = str(msg.topic)
     fields=[topic.replace("/", "_"), payload.strip('b\'').rstrip('\''),timestamp_iso +"-05:00"]
@@ -36,14 +46,7 @@ def on_message(client, userdata, msg):
 
 def Start (verbose = False):
 
-    #read config from config.yml
-    try:
-        with open("config.yml", 'r') as data:
-            global config 
-            config = yaml.safe_load(data)
-    except Exception:
-        print("error importing config.yml")
-        exit()
+    config = import_config()
 
     #setting up MQTT communication
     Broker_URL = "mqtt://" + config['MQTT_Broker'][0] + ":" + config['MQTT_Broker'][1]
@@ -81,7 +84,7 @@ def Start (verbose = False):
         file_size=Path(working_file).stat().st_size
         
         if((timestamp_epoch_logStart+LoggingTimerLength) <= calendar.timegm(time.localtime()) or file_size >= MaxFileSize):
-            print(timestamp_epoch_logStart+LoggingTimerLength)
+            #print(timestamp_epoch_logStart+LoggingTimerLength)
             print(calendar.timegm(time.localtime()))
             if(verbose==True):print("\nfile needs to be pushed.... stopping client and renaming backlog")
             timestamp_epoch_logStop = calendar.timegm(time.localtime())

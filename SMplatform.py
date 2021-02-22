@@ -224,16 +224,18 @@ def remove_dup(a):
 def build_entries(config, file, verbose=False):
 
     final_entries = [None] * len(config['Topic_toSMP'])
+    final_topics = [None] * len(config['Topic_toSMP'])
     topic_count = 0
 
 
     for t in config['Topic_toSMP']:
         if(file != None):
             entries = []
+            topic = []
 
             if(verbose==True):
                 print('\n************************************************************************')
-                print(f'''Uploading topic: {t} \nFrom: {file}''') 
+                print(f'''Found Entries for Topic: {t} \nFrom: {file}''') 
                 print('\n************************************************************************')
 
             with open(file, newline='') as f:
@@ -247,21 +249,27 @@ def build_entries(config, file, verbose=False):
             for x in data:
                 if (x != []):
                     y = x[0].split('_')
-                    if (contains(t,y)):
+                    #if(verbose==True):print(y)
+                    #if(verbose==True):print(t)
+                    if (t == y):
                         dp = f'''{{value: "{x[1]}", timestamp: "{x[2]}", status: "0"}}'''
                         entries += [dp]
-                        if(verbose==True): print(dp)
-                        if(verbose==True): print(x)
+                        topic = y
+                        #if(verbose==True): print(dp)
+                        #if(verbose==True): print(x)
 
 
         entries = ','.join(entries)
         final_entries[topic_count] = entries
+        final_topics[topic_count] = topic
+
         topic_count += 1
 
 
     if(verbose==True):print(final_entries)
+    if(verbose==True):print(final_topics)
 
-    return final_entries
+    return final_entries, final_topics
 
 def SMP_auth():
     dotenv.load_dotenv()

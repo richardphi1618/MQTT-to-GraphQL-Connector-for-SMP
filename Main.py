@@ -49,8 +49,8 @@ def ConnectionStatus_SMP(ConnectionStatus, config, Connector_Identifier, endpoin
 try:
     with open("config.yml", 'r') as data:
         config = yaml.safe_load(data)
-except Exception:
-    print("error importing config.yml")
+except Exception as e:
+    print("CESMII Connector had an error importing config.yml:" + str(e))
     exit()
 
 #SMP header setup
@@ -99,23 +99,25 @@ while True:
     if(os.path.exists(current_file) and file != None):
 
         print("Pushing: " + str(file))
-        entries = smp.build_entries(config, current_file)
+        entries, topics = smp.build_entries(config, current_file, True)
         numberOfTopics = len(config['Topic_toSMP'])
 
         for x in range(0, numberOfTopics):
-            FQ_Tag = f'''{Connector_Identifier}.{''.join(config['Topic_toSMP'][x])}'''
-            tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x] , endpoint_url, header, create = True, verbose = False)]
+            FQ_Tag = f'''{Connector_Identifier}.{'_'.join(config['Topic_toSMP'][x])}'''
+            print(FQ_Tag)
+            #tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x] , endpoint_url, header, create = True, verbose = False)]
 
             if(entries[x] != ''):
                 print("these are the entries" + entries[x])
-                mutation = smp.build_UpdateMultipleTagTS_Mutation(tag_info[x][1], entries[x])
-                print(mutation)
-                result = smp.request(mutation, endpoint_url, header) # Execute the mutation
+                print("\nThis is the topic: " + FQ_Tag)
+                #mutation = smp.build_UpdateMultipleTagTS_Mutation(tag_info[x][1], entries[x])
+                #print(mutation)
+                #result = smp.request(mutation, endpoint_url, header) # Execute the mutation
 
                 #check for errors
-                if 'errors' in result.keys():
-                    raise Exception(result)
-                    sys.exit()
+                #if 'errors' in result.keys():
+                #    raise Exception(result)
+                #    sys.exit()
             else:
                 print(f"nothing to push for: {FQ_Tag}")
 

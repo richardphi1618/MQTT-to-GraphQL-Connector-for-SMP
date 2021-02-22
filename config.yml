@@ -1,27 +1,26 @@
-
 MQTT_Broker:
-  - "192.168.0.2"
-  - "32799"
+  - "3.22.44.153"
+  - "1883"
 
 MQTTSub_Topic:
-  - "ccam_sim/#"
+  - "mqttsim/#"
   - "node-red/#"
 
 Topic_toSMP:
-  - ["runID"]
-  - ["progress"]
-  - ["tload", "1"]
-  - ["tload", "2"]
-  - ["tload", "3"]
-  - ["tload", "4"]
-  - ["tload", "5"]
-  - ["tload", "6"]
-  - ["tload", "7"]
-  - ["tload", "8"]
-  - ["tload", "9"]
-  - ["tload", "10"]
-  - ["tload", "11"]
-  - ["tload", "12"]
+  - ["mqttsim", "runID"]
+  - ["mqttsim", "progress"]
+  - ["mqttsim", "tload", "1"]
+  - ["mqttsim", "tload", "2"]
+  - ["mqttsim", "tload", "3"]
+  - ["mqttsim", "tload", "4"]
+  - ["mqttsim", "tload", "5"]
+  - ["mqttsim", "tload", "6"]
+  - ["mqttsim", "tload", "7"]
+  - ["mqttsim", "tload", "8"]
+  - ["mqttsim", "tload", "9"]
+  - ["mqttsim", "tload", "10"]
+  - ["mqttsim", "tload", "11"]
+  - ["mqttsim", "tload", "12"]
 
 Topic_toSMP_dataType:
   - "STRING"
@@ -29,7 +28,7 @@ Topic_toSMP_dataType:
   - "FLOAT"
   - "FLOAT"
   - "FLOAT"
-  - "FLOAT"
+  - "FLOAT"  
   - "FLOAT"
   - "FLOAT"
   - "FLOAT" 
