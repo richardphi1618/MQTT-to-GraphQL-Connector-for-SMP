@@ -20,4 +20,7 @@ These are the DataType the SMP will log the data as
 
 SMP_Identifier:
 The unique identifier to determine the source of the data. This is particularly helpful inside the SMP
+
+#TODO allow the addition of custom descriptions per topic
 #TODO automated tag mapping to attributes (may be a seperate project)
+
