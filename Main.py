@@ -54,8 +54,10 @@ except Exception:
     exit()
 
 #SMP header setup
+dotenv.load_dotenv()
 endpoint_url = os.environ.get("endpoint_url")
 header = smp.SMP_auth()
+print(endpoint_url)
 print(header)
 Connector_Identifier = "MQTT_Connector"
 
@@ -68,7 +70,14 @@ Destination_DIR = f'{ROOT_DIR}\\uploaded\\'
 file_list=[]
 Last_Run = False
 
+Enable_Verbose = input('Verbose? (y/n)')
+if(Enable_Verbose == 'y'):
+    Connector_Verbose = True
+else:
+    Connector_Verbose = False
+
 #Kick off the MQTT Logger
+#TODO confirm MQTT_Logger is on/connected? 
 Enable_MQTT_Logger = input('Start MQTT Logger? (y/n)')
 if(Enable_MQTT_Logger == 'y'):
     mqttclientThread = threading.Thread(target=background_MQTT_Logger_Start) 
@@ -107,9 +116,9 @@ while True:
             tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x] , endpoint_url, header, create = True, verbose = False)]
 
             if(entries[x] != ''):
-                print("these are the entries" + entries[x])
+                if(Connector_Verbose==True):print("these are the entries" + entries[x])
                 mutation = smp.build_UpdateMultipleTagTS_Mutation(tag_info[x][1], entries[x])
-                print(mutation)
+                if(Connector_Verbose==True):print(mutation)
                 result = smp.request(mutation, endpoint_url, header) # Execute the mutation
 
                 #check for errors

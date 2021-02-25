@@ -1,4 +1,4 @@
-import os, time, yaml, calendar, dotenv
+import os, time, yaml, calendar
 import datetime as DT
 import paho.mqtt.client as mqtt
 import csv
@@ -25,7 +25,6 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     timestamp_epoch = current_milli_time()
     timestamp_iso = DT.datetime.fromtimestamp(timestamp_epoch/1000).strftime('%Y-%m-%d %H:%M:%S.%f')
-    #print(f"{msg.topic} {str(msg.payload)} @time of arrival:{timestamp_iso}")
     payload = str(msg.payload)
     topic = str(msg.topic)
     fields=[topic.replace("/", "_"), payload.strip('b\'').rstrip('\''),timestamp_iso +"-05:00"]
@@ -81,8 +80,6 @@ def Start (verbose = False):
         file_size=Path(working_file).stat().st_size
         
         if((timestamp_epoch_logStart+LoggingTimerLength) <= calendar.timegm(time.localtime()) or file_size >= MaxFileSize):
-            print(timestamp_epoch_logStart+LoggingTimerLength)
-            print(calendar.timegm(time.localtime()))
             if(verbose==True):print("\nfile needs to be pushed.... stopping client and renaming backlog")
             timestamp_epoch_logStop = calendar.timegm(time.localtime())
             client.loop_stop()
