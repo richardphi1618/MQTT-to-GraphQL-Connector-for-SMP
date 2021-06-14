@@ -66,8 +66,8 @@ def Start (verbose = False):
     working_file = f'{ROOT_DIR}/MQTT_logging/backlog.csv'
     
     timestamp_epoch_logStart = calendar.timegm(time.localtime())
-    LoggingTimerLength = 10 #10 seconds
-    MaxFileSize = 50000 # 50 KB
+    LoggingTimerLength = 10 # 10 seconds
+    MaxFileSize = 50000     # 50 KB
     
     while True:
         try:

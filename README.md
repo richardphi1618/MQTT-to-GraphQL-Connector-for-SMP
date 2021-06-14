@@ -28,5 +28,6 @@ role = "rtccm_graphql" | _the roll you wish to use with the given authenticator_
 ## _#TODO_ 
  - [ ] add authentication parameters for secure MQTT broker access
  - [ ] allow the addition of custom descriptions per topic
- - [ ] automated tag mapping to attributes (may be a seperate project)
+ - [ ] automated tag mapping to attributes (may be a separate project)
+ - [ ] Address Scaling issue with gratuitous MQTT subscriptions
 

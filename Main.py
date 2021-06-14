@@ -29,7 +29,8 @@ def ConnectionStatus_SMP(ConnectionStatus, config, Connector_Identifier, endpoin
 
     for x in range(0, numberOfTopics):
         FQ_Tag = f'''{Connector_Identifier}.{''.join(config['Topic_toSMP'][x])}'''
-        tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x] , endpoint_url, header, create = True, verbose = False)]
+        tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x], 
+                                            endpoint_url, header, create = True, verbose = False)]
 
     #TODO Need to check if this is proper ~~~~~~~~~~   
     for i in tag_info:
@@ -113,7 +114,8 @@ while True:
 
         for x in range(0, numberOfTopics):
             FQ_Tag = f'''{Connector_Identifier}.{''.join(config['Topic_toSMP'][x])}'''
-            tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x] , endpoint_url, header, create = True, verbose = False)]
+            tag_info += [smp.findTagID_Create(Connector_Identifier, FQ_Tag, config['Topic_toSMP_dataType'][x], 
+                                                endpoint_url, header, create = True, verbose = False)]
 
             if(entries[x] != ''):
                 if(Connector_Verbose==True):print("these are the entries" + entries[x])
