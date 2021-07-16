@@ -3,4 +3,4 @@
 *.csv
 test.py
 .vscode/*
-env/*
+.venv/*
