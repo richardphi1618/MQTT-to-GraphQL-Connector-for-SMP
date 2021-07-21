@@ -1,11 +1,14 @@
 import csv
 import os
+from types import Optional
 
 import dotenv
 import requests
 
 
-def request(content: str, url: str, headers: str = None, verbose: bool = False) -> dict:
+def request(
+    content: str, url: str, headers: dict = None, verbose: bool = False
+) -> dict:
     """Execute request with verbose wrapper"""
     if verbose:
         print(content)
@@ -50,6 +53,20 @@ def get_token(auth: str, password: str, name: str, url: str, role: str) -> str:
 
     jwt_claim = response["data"]["authenticationValidation"]["jwtClaim"]
     return f"Bearer {jwt_claim}"
+
+
+def SMP_auth() -> dict:
+    """SMIP Authentication"""
+    dotenv.load_dotenv()
+    endpoint_url = str(os.environ.get("endpoint_url"))
+    authenticator = str(os.environ.get("authenticator"))
+    pw = str(os.environ.get("pw"))
+    user = str(os.environ.get("user"))
+    role = str(os.environ.get("role"))
+    token = str(get_token(authenticator, pw, user, endpoint_url, role))
+    header = {"Authorization": token}
+
+    return header
 
 
 def build_tsData_Query(
@@ -217,7 +234,7 @@ def findTagID_Create(
     desc: str = "This was made using Python",
     create: bool = True,
     verbose: bool = False,
-) -> list[str]:
+) -> list[Optional[str]]:
     """Find a tagID and create it if it does not already exist"""
     # Tag Identifier should proceed the tag
     # This is usually in reference to the connector being used
@@ -229,7 +246,7 @@ def findTagID_Create(
     if verbose:
         print(my_query)
     result = request(my_query, endpoint_url, header)
-    tagList = result.get("data").get("tags")
+    tagList = result["data"].get("tags")
 
     tagID = None
 
@@ -250,7 +267,7 @@ def findTagID_Create(
                 print(result)
 
             result = request(my_query, endpoint_url, header)
-            tagList = result.get("data").get("tags")
+            tagList = result["data"].get("tags")
 
             for i in tagList:
                 if i["displayName"] == tagName:
@@ -268,7 +285,7 @@ def findTagID_Create(
     return [tagName, tagID]
 
 
-def contains(small: str, big: str) -> bool:
+def contains(small: str, big: list) -> bool:
     """Return bool if small is in big"""
     for i in range(len(big) - len(small) + 1):
         for j in range(len(small)):
@@ -292,12 +309,11 @@ def remove_dup(a: list) -> None:
         i += 1
 
 
-def build_entries(config: list[str], file: str, verbose: bool = False) -> str:
+def build_entries(config: dict, file: str, verbose: bool = False) -> list[str]:
     """Build entries for batch upload to SMIP"""
-    final_entries = [None] * len(config["Topic_toSMP"])
-    topic_count = 0
+    final_entries = [""] * len(config["Topic_toSMP"])
 
-    for t in config["Topic_toSMP"]:
+    for idx, t in enumerate(config["Topic_toSMP"]):
         if file is not None:
             entries = []
 
@@ -329,27 +345,12 @@ def build_entries(config: list[str], file: str, verbose: bool = False) -> str:
                             print(x)
 
         entries = ",".join(entries)
-        final_entries[topic_count] = entries
-        topic_count += 1
+        final_entries[idx] = str(entries)
 
     if verbose:
         print(final_entries)
 
     return final_entries
-
-
-def SMP_auth() -> dict:
-    """SMIP Authentication"""
-    dotenv.load_dotenv()
-    endpoint_url = os.environ.get("endpoint_url")
-    authenticator = os.environ.get("authenticator")
-    pw = os.environ.get("pw")
-    user = os.environ.get("user")
-    role = os.environ.get("role")
-    token = get_token(authenticator, pw, user, endpoint_url, role)
-    header = {"Authorization": token}
-
-    return header
 
 
 if __name__ == "__main__":
