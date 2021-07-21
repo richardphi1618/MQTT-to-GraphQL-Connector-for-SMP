@@ -1,6 +1,6 @@
 import csv
 import os
-from types import Optional
+from typing import Optional
 
 import dotenv
 import requests
