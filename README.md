@@ -31,3 +31,15 @@ role = "rtccm_graphql" | _the roll you wish to use with the given authenticator_
  - [ ] automated tag mapping to attributes (may be a separate project)
  - [ ] Address Scaling issue with gratuitous MQTT subscriptions
 
+
+## diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> Still
+    Still --> [*]
+    Still --> Moving
+    Moving --> Still
+    Moving --> Crash
+    Crash --> [*]
+```
